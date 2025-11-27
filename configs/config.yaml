@@ -1,0 +1,107 @@
+# Default configuration for 3DPPE v2.0
+defaults:
+  - _self_
+
+# Model architecture configuration
+model:
+  backbone_type: "VoVNet"
+  backbone_config:
+    stem_channels: 64
+    stage_channels: [128, 160, 192, 224]
+    stage_blocks: [1, 3, 9, 3]
+    stage_mid_channels: [64, 80, 96, 112]
+    stage_conv_nums: [3, 3, 3, 3]
+
+  # Transformer configuration
+  num_queries: 900
+  num_decoder_layers: 6
+  num_heads: 8
+  hidden_dim: 256
+  dropout: 0.1
+  activation: "relu"
+
+  # Depth estimation
+  use_depth: true
+  depth_channels: 64
+  depth_levels: [16, 32]
+
+  # 3D positional encoding
+  pe_temperature: 10000.0
+  pe_scale: 1.0
+
+  # Loss weights
+  cls_loss_weight: 2.0
+  bbox_loss_weight: 5.0
+  depth_loss_weight: 1.0
+
+# Data configuration
+data:
+  dataset_name: "nuscenes"
+  dataset_root: "./data/nuscenes"
+  version: "v1.0-trainval"
+
+  # Data loading
+  batch_size: 2
+  num_workers: 4
+  pin_memory: true
+  persistent_workers: true
+
+  # Image preprocessing
+  img_size: [900, 1600]
+  img_norm_cfg:
+    mean: [123.675, 116.28, 103.53]
+    std: [58.395, 57.12, 57.375]
+    to_rgb: true
+
+  # Augmentation
+  use_aug: true
+  random_flip: 0.5
+  color_jitter:
+    brightness: 0.4
+    contrast: 0.4
+    saturation: 0.4
+    hue: 0.1
+
+# Training configuration
+training:
+  # Optimizer
+  optimizer: "AdamW"
+  lr: 2.0e-4
+  weight_decay: 1.0e-4
+  betas: [0.9, 0.999]
+
+  # Scheduler
+  scheduler: "StepLR"
+  step_size: 30
+  gamma: 0.1
+
+  # Training loop
+  max_epochs: 100
+  gradient_clip_val: 0.1
+  accumulate_grad_batches: 1
+
+  # Mixed precision
+  precision: "16-mixed"
+
+  # Checkpointing
+  save_top_k: 3
+  monitor: "val/mAP"
+  mode: "max"
+
+# Experiment tracking
+experiment_name: "3DPPE_experiment"
+log_dir: "./logs"
+checkpoint_dir: "./checkpoints"
+
+# Device and distributed training
+accelerator: "auto"
+devices: "auto"
+strategy: "auto"
+
+# Random seed
+seed: 42
+
+# Additional settings
+debug: false
+verbose: true
+wandb_enabled: false
