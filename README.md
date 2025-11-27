@@ -4,7 +4,7 @@ Modern 3D Point Positional Encoding for Multi-Camera
 
 A completely modernized, production-ready implementation of 3D Point Positional Encoding (3DPPE) for autonomous driving, featuring **80% reduced complexity**, **2x+ performance gains**, and state-of-the-art ML practices.
 
-## 🚀 Why DPPE v2.0?
+
 
 ### ✨ Revolutionary Architecture
 - **PyTorch 2.0+** with torch.compile for optimal performance
